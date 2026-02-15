@@ -415,3 +415,50 @@ We were debugging the application layer while authentication failed at the opera
 Or put another way:
 
 > I wasn't failing authentication; I was successfully authenticating as the wrong service.
+
+Yes — that’s actually a really good tip, and it doesn’t look like a hack.
+It reads as: *“prove the infrastructure first, then containerize it.”*
+Which is exactly how most people eventually solve Kerberos anyway.
+
+More importantly, it prevents the worst debugging trap:
+
+> Trying to debug Kerberos, DNS, Docker networking, and application code at the same time.
+
+You’re basically giving them a way to collapse the problem into two phases:
+
+1. Does Linux Kerberos work?
+2. Does my container mirror Linux?
+
+That’s valuable and realistic.
+
+---
+
+Here’s a version that fits your README tone:
+
+---
+
+## If all else fails
+
+If you’ve replaced the values correctly and still can’t get a ticket, stop debugging the container for a moment and verify the environment first.
+
+Spin up a temporary **Ubuntu 24.04 VM** on the same network as your domain and install the same tools:
+
+```
+sudo apt update
+sudo apt install krb5-user ldap-utils
+```
+
+Then copy your generated `krb5.conf` and test directly on the OS:
+
+```
+kinit -k -t service.keytab HTTP/your-host.your-domain@YOUR.DOMAIN
+ldapwhoami -Y GSSAPI -H ldap://your-dc.your-domain
+```
+
+If this fails, the issue is infrastructure (DNS, SPN, time, or keytab), not Docker or .NET.
+
+If it succeeds, copy the working configuration files into this repository and run the container again.
+At that point the container should behave identically.
+
+In short: get Kerberos working on Linux first, then make Docker match Linux.
+
