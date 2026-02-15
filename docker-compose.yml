@@ -1,0 +1,16 @@
+services:
+  ad-dotnet-10-example:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ad-dotnet-10-example
+    dns:
+      - 192.0.2.10
+    dns_search:
+      - example-ad.local
+    environment:
+      - AD_LDAP_HOST=dc1.example-ad.local
+      - KRB5_PRINCIPAL=HTTP/apphost.example-ad.local
+      - KRB5_KEYTAB_PATH=/etc/security/keytabs/service.keytab
+    volumes:
+      - ./ad-files/service.keytab:/etc/security/keytabs/service.keytab:ro
