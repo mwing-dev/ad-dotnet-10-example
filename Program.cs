@@ -2,7 +2,7 @@
 
 Console.WriteLine("Starting LDAP Kerberos test...");
 
-var ldapHost = Environment.GetEnvironmentVariable("AD_LDAP_HOST") ?? "dc1.example-ad.local";
+var ldapHost = Environment.GetEnvironmentVariable("AD_LDAP_HOST") ?? "CHANGE_THIS_TO_YOUR_AD_LDAP_HOST";
 var identifier = new LdapDirectoryIdentifier(ldapHost, 389);
 using var connection = new LdapConnection(identifier);
 

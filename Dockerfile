@@ -29,6 +29,7 @@ COPY ad-files/ldap.conf /etc/ldap/ldap.conf
 
 # entrypoint handles authentication
 COPY docker-entrypoint.sh /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
