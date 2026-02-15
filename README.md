@@ -416,27 +416,6 @@ Or put another way:
 
 > I wasn't failing authentication; I was successfully authenticating as the wrong service.
 
-Yes — that’s actually a really good tip, and it doesn’t look like a hack.
-It reads as: *“prove the infrastructure first, then containerize it.”*
-Which is exactly how most people eventually solve Kerberos anyway.
-
-More importantly, it prevents the worst debugging trap:
-
-> Trying to debug Kerberos, DNS, Docker networking, and application code at the same time.
-
-You’re basically giving them a way to collapse the problem into two phases:
-
-1. Does Linux Kerberos work?
-2. Does my container mirror Linux?
-
-That’s valuable and realistic.
-
----
-
-Here’s a version that fits your README tone:
-
----
-
 ## If all else fails
 
 If you’ve replaced the values correctly and still can’t get a ticket, stop debugging the container for a moment and verify the environment first.
