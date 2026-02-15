@@ -91,6 +91,27 @@ You need:
 You do not need to join the container to the domain.
 
 ---
+## ⚠️ Visual Studio / IDE Note
+
+This project is designed to run as a real containerized service using `docker compose up`.
+
+It relies on a startup bootstrap step (Kerberos ticket initialization) that occurs in the container entrypoint before the .NET application starts. Some IDE container launchers — particularly Visual Studio’s built-in Docker debugging — replace or bypass the container entrypoint in order to attach a debugger.
+
+When that happens the Kerberos ticket is never acquired, and authentication will fail even though the configuration is correct.
+
+Because of this:
+
+**The supported way to run and validate the project is:**
+
+```
+docker compose up --build
+```
+
+Running via an IDE’s Docker profile may start the application but will not accurately represent runtime behavior. Results may vary depending on tooling, debugger integration, or container launch method.
+
+If debugging is required, attach a debugger to the running container instead of launching the container from the IDE.
+
+---
 
 ## Setup
 
